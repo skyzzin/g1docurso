@@ -1,0 +1,18 @@
+{
+    "post":{
+        "getAll":"http://192.141.80.64:5000/post/list",
+        "get":"http://192.141.80.64:5000/post/get/",
+        "create":"http://192.141.80.64:5000/post/create",
+        "posts":"http://192.141.80.64:5000/posts/",
+        "midia":"http://192.141.80.64:5000/post/midia/"
+    },
+    "commit":{
+        "post":"http://192.141.80.64:5000/commit/create",
+        "getAll":"http://192.141.80.64:5000/commit/list"
+    },
+    "user":{
+        "create":"http://192.141.80.64:5000/user/create",
+        "find":"http://192.141.80.64:5000/user/find"
+    },
+    "wss":"ws://192.141.80.64:5000/"
+}
