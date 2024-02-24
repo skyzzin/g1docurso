@@ -1,6 +1,6 @@
 <template>
     <div class="mobile">
-      <header class="mobile-header">G1 DO CURSO</header>
+      <header class="mobile-header">G1 DO Duque News</header>
       <Home v-if="$store.state.homeView === 'home'" />
       <Notify v-if="$store.state.homeView === 'notify'" />
       <Chat v-if="$store.state.homeView === 'chat'" />
@@ -11,8 +11,8 @@
         <i class="fa-solid fa-house" :id="$store.state.homeView === 'home' ? 'activity' : ''" @click="setView('home')"></i>
         <i class="fa-solid fa-bell" :id="$store.state.homeView === 'notify' ? 'activity' : ''" @click="setView('notify')"></i>
         <i class="fa-solid fa-plus" :id="$store.state.homeView === 'post' ? 'activity' : ''" @click="setView('post')"></i>
-        <i class="fa-solid fa-comment" :id="$store.state.homeView === 'post' ? 'activity' : ''" @click="setView('chat')"></i>
-        <i class="fa-regular fa-user" :id="$store.state.homeView === 'post' ? 'activity' : ''" @click="setView('profile')"></i>
+        <i class="fa-solid fa-comment" :id="$store.state.homeView === 'chat' ? 'activity' : ''" @click="setView('chat')"></i>
+        <i class="fa-regular fa-user" :id="$store.state.homeView === 'profile' ? 'activity' : ''" @click="setView('profile')"></i>
         
         
        

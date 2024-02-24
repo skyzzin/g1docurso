@@ -11,6 +11,7 @@ public class PostModel {
     @Id
     private UUID uuid;
     private String createdat;
+    private String username;
     private String title;
     private UUID uuid_user;
     @Column(length = 10000)
@@ -18,6 +19,14 @@ public class PostModel {
     private String imgs;
     private String videos;
     private String commits;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public UUID getUuid() {
         return uuid;

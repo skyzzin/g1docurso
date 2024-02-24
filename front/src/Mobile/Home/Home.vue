@@ -2,9 +2,10 @@
     <div class="home">
       <div class="news">
         <router-link :to="'/new/'+item.uuid" class="new" v-for="(item, i) in news" :key="i">
-          <div class="title">{{ item.title }}</div>
-          <div class="img"> <img :src="localUrl + item.uuid + '/img/img_0.jpeg'" alt=""></div>
+          <div class="title"> <div class="avatar"><i data-v-a11746ca="" class="fa-solid fa-server ico"></i></div> {{title(item.username)}}</div>
+          <div class="title">{{ title(item.title) }}</div>
           <div class="desc">{{ description(item.description) }}</div>
+          <div class="img"> <img :src="localUrl + item.uuid + '/img/img_0.jpeg'" alt=""></div>
         </router-link>
       </div>
     </div>
@@ -33,7 +34,15 @@
       },
       description(item){
         if(item){
-          return item.slice(0,100) + '...'
+          return item.length > 250 ? item.slice(0,250) + '...' : item
+        }else{
+          return "Titulo Não Encontrado"
+        }
+      },
+
+      title(item){
+        if(item){
+          return item.length > 30 ? item.slice(0,30) + '...' : item
         }else{
           return "Titulo Não Encontrado"
         }
@@ -42,6 +51,11 @@
  
     mounted(){
       this.getNews();
+      const uuid = String(JSON.parse(localStorage.getItem('data')).uuid)
+      
+      if(uuid.length > 1){
+        this.$store.state.isLoggin = true
+      }
     },
 
     created(){
@@ -54,53 +68,81 @@
 
   
   .news {
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  overflow-y: scroll; 
-  align-items: center;
-  gap: 20px;
+    overflow-x: scroll;
+    display: block;
+    height: 90vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .title{
-  font-size: 16pt;
-}
+ 
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    background: #fafafa;
+    color: #222;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 10px;
+    
+   }
+
 .news a{
   text-decoration: none;
 
 }
-.commits{
-
-}
 
 .new {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-  height: 400px;
-  margin-top: 10px;
-  color: #fafafa;
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
+    background: gray;
+    padding: 10px;
+    border-radius: 5px;
+    
 }
-
-.new .title{
-    width: 100%;
-}
-.new .img{
-    width: 100%;
+ .img{
+    width: 95%;
     min-height: 300px;
-    margin: 10px 0px;
-}
-.new .img img{
-    width: 100%;
-    height: 100%;
+    max-height: 300px;
+    margin: 0 auto;
+    margin-top: 10px;
+    background: #fafafa;
     border-radius: 10px;
 }
-.new .desc{
+.title .avatar{
+  width: 35px;
+  height: 35px;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+ .img img{
     width: 100%;
-    height: 100%;
-    font-size: 14pt;
+    height: 300px;
+    border-radius: 10px;
+}
+ .desc {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
+    background: #fafafa;
+    color: #222;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 10px;
+    max-height: 200px;
+    overflow-y: auto; /* Adição para permitir rolagem vertical */
+    word-wrap: break-word; /* Adição para quebrar o texto em várias linhas */
     letter-spacing: 2px;
-    border-bottom: 1px solid #fafafa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 </style>

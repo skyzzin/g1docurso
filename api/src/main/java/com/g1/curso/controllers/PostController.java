@@ -6,6 +6,7 @@ import com.g1.curso.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,8 @@ public class PostController {
     public ResponseEntity<String> createPost(@RequestBody PostDTO postDTO) {
         PostModel post = new PostModel();
         post.setTitle(postDTO.title());
+        post.setUsername(postDTO.username());
+        post.setUuid_user(postDTO.uuid_user());
         post.setDescription(postDTO.description());
         UUID uuid = UUID.randomUUID();
         post.setUuid(uuid);
@@ -157,6 +160,47 @@ public class PostController {
         }
 
         return ResponseEntity.ok(mediaUrls);
+    }
+    @DeleteMapping("/post/delete")
+    public ResponseEntity<String> deletePost(@RequestBody PostDTO postDTO) {
+        UUID uuid = postDTO.uuid_user();
+
+
+        Optional<PostModel> optionalPost = postRepository.findById(uuid);
+
+        if (optionalPost.isPresent()) {
+            PostModel post = optionalPost.get();
+
+            String directoryPath = "./src/main/resources/static/posts/" + post.getUuid();
+            File postDirectory = new File(directoryPath);
+
+
+            if (postDirectory.exists() && postDirectory.isDirectory()) {
+
+                if (deleteDirectory(postDirectory)) {
+
+                    postRepository.deleteById(uuid);
+                    return ResponseEntity.ok("Post and associated media deleted");
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete post media");
+                }
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    private boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
     }
 
 }

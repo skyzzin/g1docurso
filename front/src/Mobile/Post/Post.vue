@@ -1,6 +1,15 @@
 <template>
     <div class="post">
         <div class="form">
+            <div class="anonimo">
+                Publicação Anonima
+                <div class="boxAnonimo" @click="setAnonimo">
+                    <div class="boxAnonimoCheck" v-if="anonimo"></div>
+                </div>
+            </div>
+
+            <br>
+
             <input type="text" class="title" placeholder="Titulo Da Publicação" v-model="title" >
             <textarea name="" id="" placeholder="Descrição da Publicação" v-model="description" cols="30" rows="10" class="desc"></textarea>
             <div class="display">
@@ -16,6 +25,8 @@
             <label for="fileImg" class="send">Adicionar Videos e Imagens</label>
             <input type="file" @change="filesBase64" name="" id="fileImg" multiple style="display: none;">
             <div class="send" @click="sender">Publicar</div>
+            
+          
         </div>
 
         <div class="blur" v-show="blur == true" @click="setBlur">
@@ -23,6 +34,9 @@
                 <img :src="currentMedia" v-if="currentMediaState == 'imagem' " alt="">
                 <video :src="currentMedia" alt="" v-if="currentMediaState == 'video' "  controls />
             </div>
+        </div>
+        <div class="warn">
+            aaa
         </div>
     </div>
 </template>
@@ -39,26 +53,73 @@
                 videos:[],
                 blur:false,
                 currentMedia:"",
-                currentMediaState:""
+                currentMediaState:"",
+                anonimo:false
             }
         },
+        
         methods:{
+            setAnonimo(){
+                this.anonimo = !this.anonimo
+            },
+            renderWarn(txt,type){
+                document.querySelector('.warn').textContent = txt
+                document.querySelector('.warn').style.background = type
+                document.querySelector('.warn').style.left = '35px'
+                setTimeout(()=>{
+                    document.querySelector('.warn').style.left = '-500px'
+                },2000)
+            },
             sender(){
-                const data = {
+                const localData = JSON.parse(localStorage.getItem("data"))
+                console.log(localData)
+                let data;
+
+                if(!this.anonimo){
+                     data = {
+                    username:localData.username,
+                    uuid_user:localData.uuid,
                     title:this.title,
                     description:this.description,
                     videos:this.videos,
                     imgs:this.imgs,
                 }
+                }else{
+                     data = {
+                    username:"Anonimo",
+                    uuid_user:localData.uuid,
+                    title:this.title,
+                    description:this.description,
+                    videos:this.videos,
+                    imgs:this.imgs,
+                }
+                }
 
                 console.log(JSON.stringify(data))
 
-
-                fetch(url.post.create,{
+                if(this.title.length > 5){
+                    if(this.description.length > 5){
+                        fetch(url.post.create,{
                     method:'POST',
                     headers:{"Content-Type":"application/json"},
                     body:JSON.stringify(data)
+                }).then().then(()=>{
+                    this.renderWarn("Publicação Enviada Com Sucesso","green")
+                }).catch(()=>{
+                    this.renderWarn("Erro Na Publicação","red")
                 })
+                        this.title = ""
+                        this.description = ""
+                        this.imgs = []
+                        this.videos = []
+                        this.anonimo = false
+                    }else{
+                        this.renderWarn("Descrição Muito Pequena")
+                    }
+                }else{
+                    this.renderWarn("Titulo Muito Pequeno","red")
+                }
+               
 
             },
             filesBase64(e) {
@@ -111,6 +172,52 @@
 
 
 <style scoped>
+    .anonimo{
+        width: 90%;
+        margin: 0 auto;
+        background: #fafafa;
+        color: #222;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        
+        justify-content: space-between;
+    }
+    .boxAnonimo{
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        background: rgb(39, 39, 39);
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .boxAnonimoCheck{
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        background: #fafafa;
+    }
+
+    .warn{
+        position: absolute;
+        background: red;
+        height: 40px;
+        padding: 10px;
+        border-radius: 10px;
+        width: 80%;
+        bottom: 75px;
+        left: -500px;
+        transition: 0.7s;
+        color: #fafafa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20pt;
+    }
     .blur{
         background-color: #2222229a;
         width: 100%;
@@ -164,7 +271,7 @@
     resize: none;
    }
    .desc{
-    height: 250px;
+    height: 180px;
     margin-top: 10px;
     padding-top: 10px;
    }
@@ -176,7 +283,7 @@
    }
    .display{
     background: #fafafa;
-    height: 200px;
+    height: 180px;
     width: 90%;
     padding: 10px;
     border-radius: 5px;

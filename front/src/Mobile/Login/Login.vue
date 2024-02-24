@@ -2,7 +2,7 @@
     <div class="">
         <div class="warn">Menssagem De Erro</div>
         <div class="cadastro" v-if="login">
-            <h1>Sejá Bem Vindo Ao G1 DO CURSO</h1>
+            <h1>Sejá Bem Vindo Ao G1 DO Duque</h1>
             <h3>Cadastro</h3>
             
             <input type="text" placeholder="Nome De Úsuario" v-model="username" class="c_username">
@@ -17,11 +17,11 @@
         </div>
         
         <div class="login cadastro" v-if="!login">
-            <h1>Sejá Bem Vindo Ao G1 DO CURSO</h1>
+            <h1>Sejá Bem Vindo Ao G1 DO Duque</h1>
             
             <h3>Login</h3>
-            <input type="text" placeholder="Email" v-model="email">
-            <input type="password" placeholder="Senha" v-model="password1">
+            <input type="text" placeholder="Email" v-model="email" class="l_username">
+            <input type="password" placeholder="Senha" v-model="password1" class="l_password">
             <div class="btnSubmit" @click="sign">Entrar</div>
             
             <div class="line"></div>
@@ -35,6 +35,8 @@
                 o Site Está Em Desenvolvimento Então Pode Haver Erros e Falta De Funcionalidades.
                 novas funcionalidades ainda vão ser implementadas no futuro.
             </p>
+                <br>
+            <p>Site Não Otimizado Para Computadores Aperte F12 e Diminua A Janela Para Usar. </p>
         </div>
         
     </div>
@@ -129,25 +131,41 @@
                     }
                 }
             },
-            async sign(){
+             sign(){
                 const data = {
                         email: this.email,
                         password: this.password1
                     };
                     console.log(data)
-                    try {
-                        const res = await fetch(url.user.find, {
+                 
+                         fetch(url.user.find, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(data)
-                        });
-                        const responseData = await res.json();
-                        localStorage.setItem("data",JSON.stringify(responseData))
-                        this.$store.state.isLoggin = true
+                        }).then((e)=>{
+                            if(e.status !== 200){
+                                
+                                document.querySelector('.warn').textContent = "Email ou Senha Incorreto"
+                                document.querySelector('.warn').style.right = '30px'
+                                setTimeout(()=>{
+                                    document.querySelector('.warn').style.right = '500px'
+                                },2000)
+                            }else{
+                                return e.json()
+                            }
+                        }).then((ev)=>{
+                            console.log(ev)
+                             if(ev){
+                                localStorage.setItem('data',JSON.stringify(ev))
+                                this.$store.state.isLoggin = true 
+                             }
+                        })
                         
-                    } catch (error) {
-                        console.error(error);
-                    }
+                        
+                        
+                       
+                        
+                  
             }
 
         }
@@ -163,10 +181,10 @@
         width: 80%;
         top: 20px;
         transition: 1s;
-        right: 300px;
+        right: 500px;
         position: absolute;
         
-        display: none;
+        display: flex;
         align-items: center;
         justify-content: center;
     }

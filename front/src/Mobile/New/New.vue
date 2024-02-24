@@ -19,7 +19,7 @@
             <video :src="item" class="video" v-for="(item,i) in midia.videos" :key="i" @click="setMidia"></video>
     
           </div>
-          <div class="showDesc" @click="setBlur">Ver Descrição</div>
+          <div class="showDesc" @click="setBlur">Ver Detalhes</div>
         </div>
       </main>
         
@@ -127,9 +127,10 @@
         this.commits = filter
       },
       sendCommit(){
+        const localData = JSON.parse(localStorage.getItem('data'))
         const data = {
           uuid_post:this.$route.params.uuid,
-          sender:'0004',
+          sender:localData.username,
           recived:null,
           content:this.sendCommitValue
         }
@@ -139,6 +140,8 @@
           body:JSON.stringify(data)
         }).then((e)=>{return e.json}).then((ev)=>{
           this.getNew()
+          this.setCommit()
+          this.sendCommitValue = ""
           console.log("Resposta Do Server: ",ev)})
         .catch((err)=>{console.error(err)})
       }
@@ -227,6 +230,11 @@
     left: 50%;
     transform: translate(-50%);
     z-index: 2;
+    word-break: break-word;
+    overflow-y: scroll;
+    font-size: 14pt;
+    letter-spacing: 2px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 

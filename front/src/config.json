@@ -4,7 +4,8 @@
         "get":"http://192.141.80.64:5000/post/get/",
         "create":"http://192.141.80.64:5000/post/create",
         "posts":"http://192.141.80.64:5000/posts/",
-        "midia":"http://192.141.80.64:5000/post/midia/"
+        "midia":"http://192.141.80.64:5000/post/midia/",
+        "delete":"http://192.141.80.64:5000/post/delete"
     },
     "commit":{
         "post":"http://192.141.80.64:5000/commit/create",
@@ -14,5 +15,8 @@
         "create":"http://192.141.80.64:5000/user/create",
         "find":"http://192.141.80.64:5000/user/find"
     },
-    "wss":"ws://192.141.80.64:5000/"
+    "chat":{
+        "wss":"ws://192.141.80.64:3001/",
+        "getAll":"http://192.141.80.64:3001/messages"
+    }
 }
