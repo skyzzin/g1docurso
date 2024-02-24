@@ -1,14 +1,14 @@
 <template>
     <div class="notify">
-        <div class="notifys" v-for="(item,i) in notifys" :key="i">
-            <div id="notify" :class="i > 1 ? 'viewed' : '' ">
+        <div class="notifys" v-for="(item,i) in notifys" :key="i" >
+            <div id="notify" v-if="sender != item.sender" >
                 <div class="target" v-if="item.target">{{ item.target }}</div>
 
                 <router-link :to="renderUrl(item.uuid_post)" :class="`${item.type} sender`" v-if="item.sender" >
                     <div style="display: flex;justify-content: center;align-items: center;">
                         <i class="fa-solid fa-server ico"></i>
                     </div>
-                     <span :style="!renderUrl(item.url) == '#' ">{{ item.sender }} Comentou Na Sua Postagem</span>
+                     <span :style="!renderUrl(item.url) == '#' ">{{ item.sender === `G1 Do Duque` ? 'G1 Do Duque' : `${item.sender} Respondeu Sua Postagem` }} </span>
                 </router-link>
                 <div class="message" v-if="item.message">{{ item.message }}</div>
             </div>
@@ -23,20 +23,9 @@
         name:"notifyVue",
         data(){
             return{
+                sender:"",
                 notifys:[
-                    {
-                        sender:"G1 Do Duque News",
-                        recived:"",
-                        type:"server",
-                        message:`
-                        Olá Seja Bem Vindo Ao G1 Do Duque, Como o Site Está Em Fase De Desenvolvimento
-                        Você Receberá Notificações Sobre Tudo Que Foi Implementado e Adicionado Como
-                        Correção De Bugs e Novas Funcionalidades.
-                        Aproveite o Site!!!
-
-                        `
-                    },
-                   
+                    
                 ]
             }
         },
@@ -51,18 +40,29 @@
                     return e.json()
                 })
 
-                posts.forEach((e,i)=>{
-                    if(e.uuid == commits[i].uuid_post){
-                        const data = {
-                            sender:commits[i].sender,
-                            type:"response",
-                            uuid_post:commits[i].uuid_post,
-                            message:commits[i].content
-                        }
-                        this.notifys.push(data)
+                const UUID = JSON.parse(localStorage.getItem('data')).uuid
+
+               
+                posts.forEach((e)=>{
+                    if(e.uuid_user === UUID){
+                        commits.forEach((commit)=>{
+                            if(commit.uuid_post == e.uuid){
+                                this.sender = commit.sender
+                                const data = {
+                                    message:commit.content,
+                                    sender:commit.sender,
+                                    uuid_post:commit.uuid_post,
+                                    type:"response"
+                                }
+                                this.notifys.push(data)
+                            }
+                        })
+                   
                     }
-                    
                 })
+                    
+                    
+                
             },
             renderUrl(uuid){
                 if(uuid){
@@ -74,6 +74,19 @@
         },
         mounted(){
             this.renderCommits()
+            this.notifys.push({
+                        sender:"G1 Do Duque",
+                        recived:"",
+                        type:"server",
+                        message:`
+                        Olá Seja Bem Vindo Ao G1 Do Duque, Como o Site Está Em Fase De Desenvolvimento
+                        Você Receberá Notificações Sobre Tudo Que Foi Implementado e Adicionado Como
+                        Correção De Bugs e Novas Funcionalidades.
+                        Aproveite o Site!!!
+
+                        `
+                    },)
+           
         }
     }
 </script>
@@ -84,7 +97,7 @@
 .notify{
     overflow-x: scroll;
     display: block;
-    height: 90vh;
+    height: 85vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .server{
