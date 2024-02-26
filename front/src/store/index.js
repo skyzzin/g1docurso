@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    homeView:"notify",
+    homeView:"home",
     isLoggin:false,
     New:{
       description:false,

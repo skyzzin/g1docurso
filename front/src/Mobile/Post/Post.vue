@@ -210,7 +210,7 @@
         border-radius: 10px;
         width: 80%;
         bottom: 75px;
-        left: -500px;
+        left: -1000px;
         transition: 0.7s;
         color: #fafafa;
         display: flex;

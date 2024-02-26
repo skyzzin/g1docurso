@@ -40,7 +40,11 @@
     },
     mounted(){
 
-        this.renderMessages()
+        try{
+            this.renderMessages()
+        } catch(e){
+            console.log(e)
+        }
         
         this.data = JSON.parse(localStorage.getItem("data"))
 
@@ -103,7 +107,8 @@
                 }catch(e){
                     console.log(e)
                 }
-                
+            }).catch((e)=>{
+                console.log(e)
             })
         },
         scrollToBottom() {

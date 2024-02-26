@@ -1,6 +1,5 @@
 cd api
 start idea .
-start gradlew.bat runBoot
 cd ..
 cd front
 start code .
