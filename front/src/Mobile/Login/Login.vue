@@ -5,10 +5,10 @@
             <h1>Sejá Bem Vindo Ao G1 DO Duque</h1>
             <h3>Cadastro</h3>
             
-            <input type="text" placeholder="Nome De Úsuario" v-model="username" class="c_username">
-            <input type="text" placeholder="Email" v-model="email" class="c_email">
-            <input type="password" placeholder="Senha" v-model="password1">
-            <input type="password" placeholder="Senha (Repita)" v-model="password2">
+            <input type="text" placeholder="Nome De Úsuario" v-model="username" class="c_username" :style="username.length < 5 ? 'border:1px solid red ' : 'border:none' ">
+            <input type="text" placeholder="Email" v-model="email" class="c_email" :style="email.length < 5 ? 'border:1px solid red ' : 'border:none' ">
+            <input type="password" placeholder="Senha" v-model="password1" :style="password1.length < 5 ? 'border:1px solid red ' : 'border:none' ">
+            <input type="password" placeholder="Senha (Repita)" v-model="password2" :style="password2.length < 5 ? 'border:1px solid red ' : 'border:none' ">
             <div class="btnSubmit" @click="createUser">Criar Conta</div>
             
             <div class="line"></div>
@@ -97,7 +97,9 @@
                                     },10)
 
                                     setTimeout(()=>{
-                                        document.querySelector('.warn').style.right = '500px'
+                                        document.querySelector('.warn').style.right = '1000px'
+                                        document.querySelector('.warn').style.right = 'none'
+
                                     },2000)
                                 }
                                 
@@ -117,7 +119,7 @@
                                     },10)
 
                                     setTimeout(()=>{
-                                        document.querySelector('.warn').style.right = '500px'
+                                        document.querySelector('.warn').style.right = '1000px'
                                         this.login = false
                                     },2000)
                                     
@@ -148,7 +150,7 @@
                                 document.querySelector('.warn').textContent = "Email ou Senha Incorreto"
                                 document.querySelector('.warn').style.right = '30px'
                                 setTimeout(()=>{
-                                    document.querySelector('.warn').style.right = '500px'
+                                    document.querySelector('.warn').style.right = '1000px'
                                 },2000)
                             }else{
                                 return e.json()
@@ -181,7 +183,7 @@
         width: 80%;
         top: 20px;
         transition: 1s;
-        right: 500px;
+        right: 1000px;
         position: absolute;
         
         display: flex;

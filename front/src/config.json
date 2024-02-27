@@ -1,22 +1,22 @@
 {
     "post":{
-        "getAll":"http://192.141.80.64:5000/post/list",
-        "get":"http://192.141.80.64:5000/post/get/",
-        "create":"http://192.141.80.64:5000/post/create",
-        "posts":"http://192.141.80.64:5000/posts/",
-        "midia":"http://192.141.80.64:5000/post/midia/",
-        "delete":"http://192.141.80.64:5000/post/delete"
+        "getAll":"http://g1duque.ddns.net:5000/post/list",
+        "get":"http://g1duque.ddns.net:5000/post/get/",
+        "create":"http://g1duque.ddns.net:5000/post/create",
+        "posts":"http://g1duque.ddns.net:5000/posts/",
+        "midia":"http://g1duque.ddns.net:5000/post/midia/",
+        "delete":"http://g1duque.ddns.net:5000/post/delete"
     },
     "commit":{
-        "post":"http://192.141.80.64:5000/commit/create",
-        "getAll":"http://192.141.80.64:5000/commit/list"
+        "post":"http://g1duque.ddns.net:5000/commit/create",
+        "getAll":"http://g1duque.ddns.net:5000/commit/list"
     },
     "user":{
-        "create":"http://192.141.80.64:5000/user/create",
-        "find":"http://192.141.80.64:5000/user/find"
+        "create":"http://g1duque.ddns.net:5000/user/create",
+        "find":"http://g1duque.ddns.net:5000/user/find"
     },
     "chat":{
-        "wss":"ws://192.141.80.64:3001/",
-        "getAll":"http://192.141.80.64:3001/messages"
+        "wss":"ws://g1duque.ddns.net:3001",
+        "getAll":"http://g1duque.ddns.net:3001/messages"
     }
 }

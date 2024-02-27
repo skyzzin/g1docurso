@@ -89,7 +89,8 @@
     },
     methods: {
         sendMessage() {
-            const message = { 
+            if(this.currentMessage.length > 0){
+                const message = { 
                 uuid_post:this.data.uuid,
                 content: this.currentMessage,
                 username: this.data.username,
@@ -97,6 +98,7 @@
             };
             this.socket.send(JSON.stringify(message));
             this.currentMessage = ""; 
+            }
         },
         renderMessages(){
             fetch(url.chat.getAll).then(e=>e.json())

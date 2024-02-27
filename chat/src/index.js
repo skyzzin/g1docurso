@@ -1,53 +1,79 @@
-const app = require('express')()
-const http = require('http').createServer(app)
+const express = require('express');
+const http = require('http');
 const WebSocket = require('ws');
-const { createTable,insertTable, selectTable, dropTable } = require('./Controller/ChatController');
+const Database = require('./Controller/ChatController');
 
-app.use(require('cors')({origin:"*"}))
+const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
+app.use(express.json());
+app.use(require('cors')({ origin: '*' }));
 
-createTable("chat",{
-    id:"integer primary key autoincrement",
-    username:"text",
-    uuid_post:"text",
-    content:"text"
-}) 
-/* insertTable("chat",{
-    username:"Skyzzin",
-    post_uuid:"Skyzzin222",
-    content:"Message Enviada"
-}) */
+const dbConfig = {
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'database'
+};
 
-const wss = new WebSocket.Server({ server:http });
+const database = new Database(dbConfig);
 
-wss.on("connection",(ws)=>{
-    
-    ws.on("message",(msg)=>{
-        const response = JSON.parse(msg)
-        insertTable('chat',response)
-
-        wss.clients.forEach((client) => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(msg);
-            }
+async function initializeDatabase() {
+    try {
+        await database.connect();
+        await database.createTable("chat_table", {
+            id: "INTEGER PRIMARY KEY AUTO_INCREMENT",
+            username: "TEXT",
+            uuid_post: "TEXT",
+            content: "TEXT"
         });
-        
-    })
+        console.log('Tabela "chat" criada com sucesso!');
+    } catch (error) {
+        console.error('Erro ao criar tabela "chat":', error);
+    }
+}
+
+wss.on("connection", (ws) => {
+    ws.on("message", async (msg) => {
+        try {
+            const response = JSON.parse(msg);
+            await database.insertTable('chat_table', response);
+
+            wss.clients.forEach((client) => {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(msg);
+                }
+            });
+        } catch (error) {
+            console.error('Erro ao processar a mensagem recebida:', error);
+        }
+    });
+});
+
+app.get("/messages", async (req, res) => {
+    try {
+        const rows = await database.selectTable("chat_table");
+        res.json(rows);
+    } catch (error) {
+        console.error('Erro ao selecionar registros da tabela "chat":', error);
+        res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+});
  
-})
+app.delete("/messages", async (req, res) => {
+    try {
+        await database.dropTable("chat_table");
+        res.send("Mensagens Deletadas");
+    } catch (error) {
+        console.error('Erro ao excluir tabela "chat_table":', error);
+        res.status(500).send('Erro interno do servidor');
+    }
+});
 
-app.get("/messages",(req,res)=>{
-    selectTable("chat",(rows)=>{
-        res.json(rows)
-    }) 
-})
+const PORT = process.env.PORT || 3001;
 
-app.delete("/messages",(req,res)=>{
-    dropTable("chat")
-    res.send("Menssagens Deletadas")
-})
-
-
-
-
-http.listen(3001,()=>{console.log("Server Is Running 3001")})
+server.listen(PORT, async () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+    await initializeDatabase(); 
+});
