@@ -1,0 +1,6 @@
+![](https://github.com/skyzzin/g1docurso/blob/main/imgs/1.webp)
+![](https://github.com/skyzzin/g1docurso/blob/main/imgs/2.webp)
+![](https://github.com/skyzzin/g1docurso/blob/main/imgs/3.webp)
+![](https://github.com/skyzzin/g1docurso/blob/main/imgs/4.webp)
+![](https://github.com/skyzzin/g1docurso/blob/main/imgs/5.webp)
+![](https://github.com/skyzzin/g1docurso/blob/main/imgs/6.webp)
