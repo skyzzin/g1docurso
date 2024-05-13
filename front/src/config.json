@@ -1,0 +1,22 @@
+{
+    "post":{
+        "getAll":"http://localhost:5000/post/list",
+        "get":"http://localhost:5000/post/get/",
+        "create":"http://localhost:5000/post/create",
+        "posts":"http://localhost:5000/posts/",
+        "midia":"http://localhost:5000/post/midia/",
+        "delete":"http://localhost:5000/post/delete"
+    },
+    "commit":{
+        "post":"http://localhost:5000/commit/create",
+        "getAll":"http://localhost:5000/commit/list"
+    },
+    "user":{
+        "create":"http://localhost:5000/user/create",
+        "find":"http://localhost:5000/user/find"
+    },
+    "chat":{
+        "wss":"ws://localhost:3001/",
+        "getAll":"http://localhost:3001/messages"
+    }
+}
